@@ -10,9 +10,9 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail, Attachment, FileContent, FileName, FileType, Disposition
 import os
 
-# SendGrid configuration - fallback to working key if env var not set
-SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY") or "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"
-SENDER_EMAIL = os.getenv("SENDER_EMAIL") or "rutujapakhare23@gmail.com"
+# SendGrid configuration - set your API key as environment variable
+SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY", "your-sendgrid-api-key-here")
+SENDER_EMAIL = os.getenv("SENDER_EMAIL", "your-email@example.com")
 
 def send_report_email(recipient_email, csv_data, chart1_path, chart2_path):
     """Send email using SendGrid API"""
