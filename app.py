@@ -22,17 +22,109 @@ st.set_page_config(
 # Custom CSS
 st.markdown("""
     <style>
-    .main-header {
-        font-size: 3rem;
-        font-weight: bold;
-        background: linear-gradient(90deg, #FF9900 0%, #FF6B00 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-align: center;
-        padding: 1rem 0;
+    /* Import professional fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    /* Global styling */
+    .stApp {
+        font-family: 'Inter', sans-serif;
     }
+    
+    /* Main header styling */
+    .main-header {
+        font-size: 5rem !important;
+        font-weight: 600 !important;
+        background: linear-gradient(135deg, #232F3E 0%, #FF9900 50%, #146EB4 100%) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        text-align: center !important;
+        padding: 2rem 0 !important;
+        margin-bottom: 1rem !important;
+        letter-spacing: -0.02em !important;
+        display: block !important;
+    }
+    
+    /* Subtitle styling */
+    .subtitle {
+        text-align: center;
+        color: #5A6C7D;
+        font-size: 1.4rem;
+        font-weight: 400;
+        margin-bottom: 3rem;
+        line-height: 1.5;
+    }
+    
+    /* Professional card styling */
+    .metric-card {
+        background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e9ecef;
+        margin: 0.5rem 0;
+    }
+    
+    /* Sidebar styling */
+    .css-1d391kg {
+        background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+    }
+    
+    /* Button styling */
+    .stButton > button {
+        background: linear-gradient(135deg, #FF9900 0%, #FF6B00 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(255, 153, 0, 0.2);
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(255, 153, 0, 0.3);
+    }
+    
+    /* Alert styling */
     .stAlert {
         border-radius: 10px;
+        border-left: 4px solid #FF9900;
+        background: linear-gradient(90deg, rgba(255, 153, 0, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    }
+    
+    /* Section headers */
+    .section-header {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #232F3E;
+        margin: 2rem 0 1rem 0;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #FF9900;
+    }
+    
+    /* Professional spacing */
+    .main-content {
+        padding: 2rem 1rem;
+    }
+    
+    /* Chart containers */
+    .chart-container {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e9ecef;
+        margin: 1rem 0;
+    }
+    
+    /* Navigation styling */
+    .nav-header {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #232F3E;
+        margin-bottom: 1rem;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -40,15 +132,16 @@ st.markdown("""
 DB_NAME = "amazon_reviews.db"
 
 # Header
+st.markdown('<div class="main-content">', unsafe_allow_html=True)
 st.markdown('<p class="main-header">Amazon Review Sentiment Analyzer</p>', unsafe_allow_html=True)
 
 # Sidebar
 with st.sidebar:
-    st.markdown("### Navigation")
+    st.markdown('<p class="nav-header">Navigation</p>', unsafe_allow_html=True)
     page = st.radio("", ["Upload & Process", "View Analytics", "Help"])
     
     st.markdown("---")
-    st.markdown("### Settings")
+    st.markdown('<p class="nav-header">Settings</p>', unsafe_allow_html=True)
     show_debug = st.checkbox("Show Debug Info", value=False)
     
     st.markdown("---")
@@ -66,7 +159,7 @@ with st.sidebar:
             st.error(f"Error: {e}")
     
     st.markdown("---")
-    st.markdown("### Quick Stats")
+    st.markdown('<p class="nav-header">Quick Stats</p>', unsafe_allow_html=True)
     try:
         conn = sqlite3.connect(DB_NAME)
         count = pd.read_sql_query("SELECT COUNT(*) as count FROM reviews", conn).iloc[0]['count']
@@ -78,7 +171,7 @@ with st.sidebar:
 # ==================== PAGE 1: UPLOAD & PROCESS ====================
 if page == "Upload & Process":
     
-    st.markdown("## Step 1: Upload Your Data")
+    st.markdown('<h2 class="section-header">Step 1: Upload Your Data</h2>', unsafe_allow_html=True)
     
     # Option to choose upload method
     upload_method = st.radio(
@@ -133,7 +226,7 @@ if page == "Upload & Process":
             st.dataframe(col_info, use_container_width=True)
         
         st.markdown("---")
-        st.markdown("## Step 2: Configure Columns")
+        st.markdown('<h2 class="section-header">Step 2: Configure Columns</h2>', unsafe_allow_html=True)
         
         # Auto-detect review column
         def auto_detect_review_column(df):
@@ -211,7 +304,7 @@ if page == "Upload & Process":
                 st.info(f"Sample rating: {sample_rating}")
         
         st.markdown("---")
-        st.markdown("## Step 3: Run Analysis")
+        st.markdown('<h2 class="section-header">Step 3: Run Analysis</h2>', unsafe_allow_html=True)
         
         col_btn1, col_btn2, col_btn3 = st.columns([1, 2, 1])
         
